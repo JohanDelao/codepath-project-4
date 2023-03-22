@@ -101,6 +101,11 @@ body{
   border: 1px solid black;
   cursor: pointer;
 }
+.bannedP{
+  color: white;
+  font-size: 20px;
+  text-align: left;
+}
 #pokemonName{
   margin: 0;
   font-size: 32px;

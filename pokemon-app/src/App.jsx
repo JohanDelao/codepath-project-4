@@ -24,12 +24,12 @@ function App() {
       const response = await axios.get(url);
       let pokemonData = response.data;
       let types = pokemonData.types;
-      types = types.map((data) => {
+      let newTypes = types.map((data) => {
         return data.type.name;
       });
       let pokemonObject = {
         name: pokemonData.name,
-        types: types,
+        types: newTypes,
         image: pokemonData.sprites.other.dream_world.front_default,
         height: pokemonData.height,
         weight: pokemonData.weight,
@@ -47,6 +47,14 @@ function App() {
     setGeneratedPokemon(pokemon[index]);
   }
 
+  function checkIfBanned(array) {
+    for (let i = 0; i < array.length; i++) {
+      if (bannedList.includes(array[i])) {
+        return false;
+      }
+    }
+    return true;
+  }
   return (
     <div className="App">
       <div className="upperSection">
@@ -59,7 +67,71 @@ function App() {
         </div>
       </div>
       <div className="container">
-        <div className="pokeBioSection">
+        {generatedPokemon.types && checkIfBanned(generatedPokemon.types) ? <div className="pokeBioSection">
+          <div className="upperBio">
+            <h3 id="pokemonName">{generatedPokemon.name}</h3>
+            <div className="typeOuterContainer">
+              {generatedPokemon.types.map((type) => {
+                return (
+                  <div
+                    className="typeContainer"
+                    value={type}
+                    onClick={() => {
+                      if (!bannedList.includes(type)) {
+                        setBannedList((bannedTypes) => [...bannedTypes, type]);
+                      }
+                    }}
+                  >
+                    <p className="type" value={type}>
+                      {type}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="mainBio">
+            <div className="bioImage">
+              <img
+                id="image"
+                src={generatedPokemon.image}
+                width={225}
+                height={225}
+              ></img>
+            </div>
+            <div className="bioBio">
+              <div className="heightSection">
+                <p className="header">Height</p>
+                <p id="height">{generatedPokemon.height / 10} m</p>
+              </div>
+              <div className="weightSection">
+                <p className="header">Weight</p>
+                <p id="weight">{generatedPokemon.weight / 10} kg</p>
+              </div>
+            </div>
+          </div>
+        </div> 
+        :
+        generatePokemon()};
+        <div className="bannedTypes">
+          <h3 id="bannedHeader">Banned Types</h3>
+          <ul>
+            {bannedList &&
+              bannedList.map((banned) => {
+                return <li className="bannedP">{banned}</li>;
+              })}
+          </ul>
+        </div>
+      </div>
+      <img id="pokeball" src={pokeball} width={250}></img>
+    </div>
+  );
+}
+
+export default App;
+
+{
+  /* <div className="pokeBioSection">
           <div className="upperBio">
             <h3 id="pokemonName">{generatedPokemon.name}</h3>
             <div className="typeOuterContainer">
@@ -102,20 +174,5 @@ function App() {
               </div>
             </div>
           </div>
-        </div>
-        <div className="bannedTypes">
-          <h3 id="bannedHeader">Banned Types</h3>
-          <ul>
-            {bannedList &&
-              bannedList.map((banned) => {
-                return <li>{banned}</li>;
-              })}
-          </ul>
-        </div>
-      </div>
-      <img id="pokeball" src={pokeball} width={250}></img>
-    </div>
-  );
+        </div> */
 }
-
-export default App;
