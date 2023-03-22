@@ -8,7 +8,15 @@ import axios from "axios";
 function App() {
   const [pokemon, setPokemon] = useState([]);
   const [index, setIndex] = useState(Math.floor(Math.random() * 40));
-  const [generatedPokemon, setGeneratedPokemon] = useState(pokemon[index]);
+  const [generatedPokemon, setGeneratedPokemon] = useState({
+    name: "bulbasaur",
+    types: ["grass", "poison"],
+    image:
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg",
+    height: 7,
+    weight: 69,
+  });
+  const [bannedList, setBannedList] = useState([]);
 
   async function fetchData() {
     for (let i = 1; i < 40; i++) {
@@ -37,8 +45,8 @@ function App() {
   function generatePokemon() {
     setIndex(Math.floor(Math.random() * 40));
     setGeneratedPokemon(pokemon[index]);
-    console.log(generatedPokemon);
   }
+
   return (
     <div className="App">
       <div className="upperSection">
@@ -57,8 +65,18 @@ function App() {
             <div className="typeOuterContainer">
               {generatedPokemon.types.map((type) => {
                 return (
-                  <div className="typeContainer">
-                    <p className="type">{type}</p>
+                  <div
+                    className="typeContainer"
+                    value={type}
+                    onClick={() => {
+                      if(!bannedList.includes(type)){
+                        setBannedList((bannedTypes) => [...bannedTypes, type]);
+                      }
+                    }}
+                  >
+                    <p className="type" value={type}>
+                      {type}
+                    </p>
                   </div>
                 );
               })}
@@ -66,7 +84,12 @@ function App() {
           </div>
           <div className="mainBio">
             <div className="bioImage">
-              <img id="image" src={generatedPokemon.image} width={225} height={225}></img>
+              <img
+                id="image"
+                src={generatedPokemon.image}
+                width={225}
+                height={225}
+              ></img>
             </div>
             <div className="bioBio">
               <div className="heightSection">
@@ -82,6 +105,12 @@ function App() {
         </div>
         <div className="bannedTypes">
           <h3 id="bannedHeader">Banned Types</h3>
+          <ul>
+            {bannedList &&
+              bannedList.map((banned) => {
+                return <li>{banned}</li>;
+              })}
+          </ul>
         </div>
       </div>
       <img id="pokeball" src={pokeball} width={250}></img>

@@ -23,7 +23,7 @@ body{
   max-width: 1024px;
   margin: 0 auto;
   justify-content: space-between;
-  margin-top: 10%;
+  margin-top: 5%;
   flex-wrap: wrap-reverse;
 }
 .textSection{
@@ -99,6 +99,7 @@ body{
   align-items: center;
   border-radius: 10px;
   border: 1px solid black;
+  cursor: pointer;
 }
 #pokemonName{
   margin: 0;
